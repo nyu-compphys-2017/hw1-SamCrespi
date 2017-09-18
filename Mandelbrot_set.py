@@ -15,7 +15,7 @@ start_time = time.time()
 
 # Define plot features
 
-points=5000000
+points=10000000
 iters=100
 
 x_min = -2.
@@ -33,7 +33,8 @@ y = np.random.rand(points)*(y_max-y_min) + y_min
 z = []
 
 for (a, b) in zip(x, y) :
-    z += [complex(a, b)]
+    zz = complex(a, b)
+    z += [zz]
 
 z = np.array(z,complex)
 
@@ -52,16 +53,19 @@ for i in range(0, points):
             control[i]=1
             break
         old_z=new_z
+    prog=(i*100.)/points
+    if prog==(i*100.)//points:
+        print 'Progress: ', int(prog),'%'
 
 z_M = []
-z_notM = []
+#z_notM = [] #>>>>>>>> useless, I need memory
 
 for i in range(0, points):
     if control[i]==0: z_M += [z[i]]
-    else: z_notM += [z[i]]
+    #else: z_notM += [z[i]]
 
 z_M = np.array(z_M,complex)
-z_notM = np.array(z_notM,complex)
+#z_notM = np.array(z_notM,complex)
 
 print 'Percentage of Mandelbrot points: ', len(z_M)*100/points,'%'
 
@@ -71,7 +75,8 @@ print 'Percentage of Mandelbrot points: ', len(z_M)*100/points,'%'
 s=0.9
 plt.plot(z_M.real,z_M.imag,'k.',ms=s)
 
-print "Time: %s seconds" % (time.time() - start_time)
+time = time.time() - start_time
+print 'Time: ', time//60, 'min ', time%60, 's'
 
 plt.show()
 
